@@ -7,7 +7,8 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-pixi-fiber": "^0.8.0",
-    "react-scripts": "3.0.0"
+    "react-scripts": "3.0.0",
+    "yarn": "^1.15.2"
   },
   "devDependencies": {
     "prop-types": "15.7.2"
