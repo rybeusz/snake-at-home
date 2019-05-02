@@ -7,6 +7,7 @@ const DIR_LEFT = "LEFT";
 const DIR_RIGHT = "RIGHT";
 const GAME_ROWS = 15;
 const GAME_COLUMNS = 20;
+const GRID_SIZE = 40;
 
 let timer = null;
 let direction = DIR_RIGHT;

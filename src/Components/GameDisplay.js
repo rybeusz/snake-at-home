@@ -5,11 +5,10 @@ import GameScreen from '../Containers/GameScreen';
 import GameEndScreen from '../Containers/GameEndScreen';
 import GameStartScreen from '../Containers/GameStartScreen';
 
-
 let stageOptions = {
   autoResize: true,
-  height: 600,
   width: 800,
+  height: 600,
   resolution: window.devicePixelRatio || 1,
   transparent: false
 };
@@ -25,15 +24,18 @@ class GameDisplay extends Component {
     let currentScreen;
     switch (this.props.gameState) {
       case 1:
-        currentScreen = <GameScreen stageOptions={stageOptions} snakeData={this.props.snakeData}
+        currentScreen = <GameScreen stageWidth={stageOptions.width} stageHeight={stageOptions.height}
+                                    snakeData={this.props.snakeData}
                                     foodData={this.props.foodData} points={this.props.points}/>;
         break;
       case 2:
-        currentScreen = <GameEndScreen stageOptions={stageOptions} clickHandler={this.props.callback}/>;
+        currentScreen = <GameEndScreen stageWidth={stageOptions.width} stageHeight={stageOptions.height}
+                                       clickHandler={this.props.callback}/>;
         break;
       case 0:
       default:
-        currentScreen = <GameStartScreen stageOptions={stageOptions} clickHandler={this.props.callback}/>;
+        currentScreen = <GameStartScreen stageWidth={stageOptions.width} stageHeight={stageOptions.height}
+                                         clickHandler={this.props.callback}/>;
         break;
     }
 

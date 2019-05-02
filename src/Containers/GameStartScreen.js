@@ -8,7 +8,7 @@ function GameStartScreen(props) {
       <Text
         anchor="0.5,1"
         interactive
-        position={`${props.stageOptions.width / 2},${props.stageOptions.height / 2}`}
+        position={`${props.stageWidth / 2},${props.stageHeight / 2}`}
         style={{ fill: 0x61dafb, fontSize: 40 }}
         text={'START GAME'}
       />

@@ -17,7 +17,7 @@ function GameScreen(props) {
       <Text
         anchor="0.5,1"
         interactive
-        position={`${props.stageOptions.width / 2},${props.stageOptions.height}`}
+        position={`${props.stageWidth / 2},${props.stageHeight}`}
         style={{ fill: 0x61dafb, fontSize: 24 }}
         text={'points: ' + props.points}
       />
