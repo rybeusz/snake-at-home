@@ -108,6 +108,7 @@ class Game extends Component {
         break;
     }
 
+    //  Wrap snake (in tortilla)wa
     if(headPosition[0] > GAME_COLUMNS-1) {
         headPosition[0] = 0;
     }
