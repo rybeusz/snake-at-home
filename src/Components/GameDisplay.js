@@ -24,13 +24,13 @@ class GameDisplay extends Component {
     let currentScreen;
     switch (this.props.gameState) {
       case 1:
-        currentScreen = <GameScreen stageWidth={stageOptions.width} stageHeight={stageOptions.height}
-                                    snakeData={this.props.snakeData}
-                                    foodData={this.props.foodData} points={this.props.points}/>;
+        currentScreen = <GameScreen {...this.props}
+                                    stageWidth={stageOptions.width} stageHeight={stageOptions.height}
+                        />;
         break;
       case 2:
         currentScreen = <GameEndScreen stageWidth={stageOptions.width} stageHeight={stageOptions.height}
-                                       clickHandler={this.props.callback}/>;
+                                       clickHandler={this.props.callback} score={this.props.points}/>;
         break;
       case 0:
       default:

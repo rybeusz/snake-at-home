@@ -108,11 +108,17 @@ class Game extends Component {
         break;
     }
 
-    //  check for boundaries
-    if(headPosition[0] > GAME_COLUMNS-1 || headPosition[0] < 0
-    || headPosition[1] > GAME_ROWS-1 || headPosition[1] < 0) {
-      this.gameOver();
-      return;
+    if(headPosition[0] > GAME_COLUMNS-1) {
+        headPosition[0] = 0;
+    }
+    if(headPosition[0] < 0) {
+        headPosition[0] = GAME_COLUMNS-1;
+    }
+    if(headPosition[1] > GAME_ROWS-1) {
+        headPosition[1] = 0;
+    }
+    if(headPosition[1] < 0) {
+        headPosition[1] = GAME_ROWS-1;
     }
 
     //  check if snake bites himself

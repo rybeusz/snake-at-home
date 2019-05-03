@@ -10,7 +10,7 @@ function GameEndScreen(props) {
         interactive
         position={`${props.stageWidth / 2},${props.stageHeight / 2}`}
         style={{ fill: 0x61dafb, fontSize: 40, align: 'center' }}
-        text={'GAME OVER \nRESTART GAME?'}
+        text={'GAME OVER \nSCORE: ' + `${props.score}` + '\nRESTART GAME?'}
       />
     </Sprite>
   );
