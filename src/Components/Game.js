@@ -82,7 +82,6 @@ class Game extends Component {
       this.createSpecialMeal();
       return;
     }
-    console.log("create flower", [...newFlowerPosition]);
     this.setState(state => {
       state.flower = [...newFlowerPosition, true, Game.Model.flowerLifespan];
       return {

@@ -15,9 +15,6 @@ let stageOptions = {
 };
 
 class GameDisplay extends Component {
-  componentDidMount() {
-
-  }
 
   render() {
     let currentScreen;
