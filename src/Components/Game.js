@@ -13,6 +13,7 @@ let timer = null;
 let direction = DIR_RIGHT;
 let lastKeyPressed = 39;
 let gameInterval = 500;
+let flowerLifespan = 25;
 
 let hasEaten = false;
 
@@ -20,6 +21,7 @@ let initiallState = {
   gameState: 0,
   snake: [[3,1], [2,1], [1,1]],
   food: [0,0],
+  flower: [0,0, false],
   points: 0
 };
 
@@ -59,6 +61,24 @@ class Game extends Component {
 
     this.setState(state => {
       state.food = newFoodPosition;
+      return {
+        state
+      };
+    });
+  };
+
+  // recreates new flower, that slows the snake down
+  createSpecialMeal = () => {
+    let newFlowerPosition = [Math.floor(Math.random() * GAME_COLUMNS), Math.floor(Math.random() * GAME_ROWS)];
+
+    let foodOnSnake = this.state.snake.filter(elem => elem[0] === newFlowerPosition[0] && elem[1] === newFlowerPosition[1]);
+    if(foodOnSnake.length > 0) {
+      this.createSpecialMeal();
+      return;
+    }
+
+    this.setState(state => {
+      state.flower = newFlowerPosition;
       return {
         state
       };
@@ -137,6 +157,20 @@ class Game extends Component {
       });
     }
 
+    //  check if snake hits the flower, reset speed and count point
+    if(this.state.flower[2] === true && headPosition[0] === this.state.flower[0]
+      && headPosition[1] === this.state.flower[1]) {
+      gameInterval = 500;
+      this.changeInterval();
+      this.setState(state => {
+        state.points++;
+        this.state.flower[2] = false;
+        return {
+          state
+        };
+      });
+    }
+
     //  unshift snake's array, and if snake hits the food - do not trim his tail
     this.setState(state => {
       if(!hasEaten) {
@@ -204,7 +238,7 @@ class Game extends Component {
     return (<div>
               <GameDisplay snakeData={this.state.snake} foodData={this.state.food}
                            points={this.state.points} gameState={this.state.gameState}
-                           callback={this.reStartGame}/>
+                           callback={this.reStartGame} flowerData={this.state.flower}/>
             </div>);
   }
 }
