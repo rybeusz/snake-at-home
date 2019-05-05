@@ -21,8 +21,7 @@ class GameDisplay extends Component {
     switch (this.props.gameState) {
       case 1:
         currentScreen = <GameScreen {...this.props}
-                                    stageWidth={stageOptions.width} stageHeight={stageOptions.height}
-                        />;
+                                    stageWidth={stageOptions.width} stageHeight={stageOptions.height}/>;
         break;
       case 2:
         currentScreen = <GameEndScreen stageWidth={stageOptions.width} stageHeight={stageOptions.height}
