@@ -8,7 +8,7 @@ class Game extends Component {
       gameState: 0,
       snake: [[3,1], [2,1], [1,1]],
       food: [0,0],
-      flower: [0,0, false],
+      flower: [0,0, false, 25],
       points: 0
     },
 
@@ -22,7 +22,7 @@ class Game extends Component {
     GAME_COLUMNS : 20,
 
     timer : null,
-    direction : "DIR_RIGHT",
+    direction : "RIGHT",
     lastKeyPressed : 39,
     gameInterval : 500,
     flowerLifespan : 25,
@@ -74,6 +74,7 @@ class Game extends Component {
 
   // recreates new flower, that slows the snake down
   createSpecialMeal = () => {
+
     let newFlowerPosition = [Math.floor(Math.random() * Game.Model.GAME_COLUMNS), Math.floor(Math.random() * Game.Model.GAME_ROWS)];
 
     let foodOnSnake = this.state.snake.filter(elem => elem[0] === newFlowerPosition[0] && elem[1] === newFlowerPosition[1]);
@@ -81,9 +82,9 @@ class Game extends Component {
       this.createSpecialMeal();
       return;
     }
-
+    console.log("create flower", [...newFlowerPosition]);
     this.setState(state => {
-      state.flower = newFlowerPosition;
+      state.flower = [...newFlowerPosition, true, Game.Model.flowerLifespan];
       return {
         state
       };
@@ -183,6 +184,23 @@ class Game extends Component {
       });
     }
 
+    //  if flower exists, count down it's time, if it doesn't - check if it should
+    if(this.state.flower[2]) {
+      this.setState(state => {
+        state.flower[3]--;
+        if(this.state.flower[3] <= 0) {
+          state.flower[2] = false;
+        }
+        return {
+          state
+        };
+      });
+    } else {
+      if(Math.random() > 0.9) {
+        this.createSpecialMeal();
+      }
+    }
+
     //  unshift snake's array, and if snake hits the food - do not trim his tail
     this.setState(state => {
       if(!Game.Model.hasEaten) {
@@ -219,6 +237,7 @@ class Game extends Component {
       state.snake = [[3,1], [2,1], [1,1]];
       state.food = [0,0];
       state.points = 0;
+      state.flower = [0,0, false, 25];
       return {
         state
       };
