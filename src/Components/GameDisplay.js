@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Stage } from "react-pixi-fiber";
+import { Stage, withApp } from "react-pixi-fiber";
 import GameScreen from '../Containers/GameScreen';
 import GameEndScreen from '../Containers/GameEndScreen';
 import GameStartScreen from '../Containers/GameStartScreen';
@@ -14,7 +14,6 @@ let stageOptions = {
 };
 
 class GameDisplay extends Component {
-
   render() {
     let currentScreen;
     switch (this.props.gameState) {
@@ -23,12 +22,14 @@ class GameDisplay extends Component {
                                     stageWidth={stageOptions.width} stageHeight={stageOptions.height}/>;
         break;
       case 2:
-        currentScreen = <GameEndScreen stageWidth={stageOptions.width} stageHeight={stageOptions.height}
+        currentScreen = <GameEndScreen {...this.props}
+                                       stageWidth={stageOptions.width} stageHeight={stageOptions.height}
                                        clickHandler={this.props.callback} score={this.props.points}/>;
         break;
       case 0:
       default:
-        currentScreen = <GameStartScreen stageWidth={stageOptions.width} stageHeight={stageOptions.height}
+        currentScreen = <GameStartScreen {...this.props}
+                                         stageWidth={stageOptions.width} stageHeight={stageOptions.height}
                                          clickHandler={this.props.callback}/>;
         break;
     }
@@ -47,4 +48,4 @@ GameDisplay.propTypes = {
   points: PropTypes.number.isRequired
 };
 
-export default GameDisplay;
+export default withApp(GameDisplay);
