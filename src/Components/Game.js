@@ -1,32 +1,37 @@
 import React,  { Component } from 'react';
 import GameDisplay from './GameDisplay';
 
-const DIR_UP = "UP";
-const DIR_DOWN = "DOWN";
-const DIR_LEFT = "LEFT";
-const DIR_RIGHT = "RIGHT";
-const GAME_ROWS = 15;
-const GAME_COLUMNS = 20;
-const GRID_SIZE = 40;
-
-let timer = null;
-let direction = DIR_RIGHT;
-let lastKeyPressed = 39;
-let gameInterval = 500;
-let flowerLifespan = 25;
-
-let hasEaten = false;
-
-let initiallState = {
-  gameState: 0,
-  snake: [[3,1], [2,1], [1,1]],
-  food: [0,0],
-  flower: [0,0, false],
-  points: 0
-};
-
 class Game extends Component {
-  state = initiallState;
+
+  static Model = {
+    initiallState : {
+      gameState: 0,
+      snake: [[3,1], [2,1], [1,1]],
+      food: [0,0],
+      flower: [0,0, false],
+      points: 0
+    },
+
+    GRID_SIZE: 40,
+
+    DIR_UP : "UP",
+    DIR_DOWN : "DOWN",
+    DIR_LEFT : "LEFT",
+    DIR_RIGHT : "RIGHT",
+    GAME_ROWS : 15,
+    GAME_COLUMNS : 20,
+
+    timer : null,
+    direction : "DIR_RIGHT",
+    lastKeyPressed : 39,
+    gameInterval : 500,
+    flowerLifespan : 25,
+
+    hasEaten : false
+
+  };
+
+  state = Game.Model.initiallState;
 
   componentDidMount() {
     window.addEventListener(
@@ -35,7 +40,7 @@ class Game extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(timer);
+    clearInterval(Game.Model.timer);
 
     window.removeEventListener(
       "keydown", this.handleKeys, false
@@ -44,14 +49,14 @@ class Game extends Component {
 
   // speeds up the snake every meal
   changeInterval() {
-    clearInterval(timer);
-    if(gameInterval > 100) gameInterval -= 20;
-    timer = setInterval(this.moveSnake, gameInterval);
+    clearInterval(Game.Model.timer);
+    if(Game.Model.gameInterval > 100) Game.Model.gameInterval -= 20;
+    Game.Model.timer = setInterval(this.moveSnake, Game.Model.gameInterval);
   }
 
   // recreates new food outside of snake recursively
   createNewMeal = () => {
-    let newFoodPosition = [Math.floor(Math.random() * GAME_COLUMNS), Math.floor(Math.random() * GAME_ROWS)];
+    let newFoodPosition = [Math.floor(Math.random() * Game.Model.GAME_COLUMNS), Math.floor(Math.random() * Game.Model.GAME_ROWS)];
 
     let foodOnSnake = this.state.snake.filter(elem => elem[0] === newFoodPosition[0] && elem[1] === newFoodPosition[1]);
     if(foodOnSnake.length > 0) {
@@ -69,7 +74,7 @@ class Game extends Component {
 
   // recreates new flower, that slows the snake down
   createSpecialMeal = () => {
-    let newFlowerPosition = [Math.floor(Math.random() * GAME_COLUMNS), Math.floor(Math.random() * GAME_ROWS)];
+    let newFlowerPosition = [Math.floor(Math.random() * Game.Model.GAME_COLUMNS), Math.floor(Math.random() * Game.Model.GAME_ROWS)];
 
     let foodOnSnake = this.state.snake.filter(elem => elem[0] === newFlowerPosition[0] && elem[1] === newFlowerPosition[1]);
     if(foodOnSnake.length > 0) {
@@ -87,22 +92,22 @@ class Game extends Component {
 
   //  game animation and logic
   moveSnake = () => {
-    hasEaten = false;
+    Game.Model.hasEaten = false;
 
     //  set new direction if not totally opposite to current direction
-    switch (lastKeyPressed) {
+    switch (Game.Model.lastKeyPressed) {
       default:
-      case DIR_RIGHT:
-        if (direction !== DIR_LEFT) direction = DIR_RIGHT;
+      case Game.Model.DIR_RIGHT:
+        if (Game.Model.direction !== Game.Model.DIR_LEFT) Game.Model.direction = Game.Model.DIR_RIGHT;
         break;
-      case DIR_DOWN:
-        if (direction !== DIR_UP) direction = DIR_DOWN;
+      case Game.Model.DIR_DOWN:
+        if (Game.Model.direction !== Game.Model.DIR_UP) Game.Model.direction = Game.Model.DIR_DOWN;
         break;
-      case DIR_LEFT:
-        if (direction !== DIR_RIGHT) direction = DIR_LEFT;
+      case Game.Model.DIR_LEFT:
+        if (Game.Model.direction !== Game.Model.DIR_RIGHT) Game.Model.direction = Game.Model.DIR_LEFT;
         break;
-      case DIR_UP:
-        if (direction !== DIR_DOWN) direction = DIR_UP;
+      case Game.Model.DIR_UP:
+        if (Game.Model.direction !== Game.Model.DIR_DOWN) Game.Model.direction = Game.Model.DIR_UP;
         break;
     }
 
@@ -112,34 +117,34 @@ class Game extends Component {
     headPosition[1] = this.state.snake[0][1];
 
     //  set new head position according to direction
-    switch (direction) {
+    switch (Game.Model.direction) {
       default:
-      case DIR_RIGHT :
+      case Game.Model.DIR_RIGHT :
         headPosition[0]++;
         break;
-      case DIR_LEFT :
+      case Game.Model.DIR_LEFT :
         headPosition[0]--;
         break;
-      case DIR_UP :
+      case Game.Model.DIR_UP :
         headPosition[1]--;
         break;
-      case DIR_DOWN :
+      case Game.Model.DIR_DOWN :
         headPosition[1]++;
         break;
     }
 
     //  Wrap snake (in tortilla)wa
-    if(headPosition[0] > GAME_COLUMNS-1) {
+    if(headPosition[0] > Game.Model.GAME_COLUMNS-1) {
         headPosition[0] = 0;
     }
     if(headPosition[0] < 0) {
-        headPosition[0] = GAME_COLUMNS-1;
+        headPosition[0] = Game.Model.GAME_COLUMNS-1;
     }
-    if(headPosition[1] > GAME_ROWS-1) {
+    if(headPosition[1] > Game.Model.GAME_ROWS-1) {
         headPosition[1] = 0;
     }
     if(headPosition[1] < 0) {
-        headPosition[1] = GAME_ROWS-1;
+        headPosition[1] = Game.Model.GAME_ROWS-1;
     }
 
     //  check if snake bites himself
@@ -153,7 +158,7 @@ class Game extends Component {
 
     //  check if snake hits the food, count the points
     if(headPosition[0] === this.state.food[0] && headPosition[1] === this.state.food[1]) {
-      hasEaten=true;
+      Game.Model.hasEaten=true;
       this.createNewMeal();
       this.changeInterval();
       this.setState(state => {
@@ -167,7 +172,7 @@ class Game extends Component {
     //  check if snake hits the flower, reset speed and count point
     if(this.state.flower[2] === true && headPosition[0] === this.state.flower[0]
       && headPosition[1] === this.state.flower[1]) {
-      gameInterval = 500;
+      Game.Model.gameInterval = 500;
       this.changeInterval();
       this.setState(state => {
         state.points++;
@@ -180,7 +185,7 @@ class Game extends Component {
 
     //  unshift snake's array, and if snake hits the food - do not trim his tail
     this.setState(state => {
-      if(!hasEaten) {
+      if(!Game.Model.hasEaten) {
         state.snake.pop();
       }
       state.snake.unshift(headPosition);
@@ -192,7 +197,7 @@ class Game extends Component {
 
   gameOver = () => {
     console.log("Game Over");
-    clearInterval(timer);
+    clearInterval(Game.Model.timer);
     this.setState(state => {
       state.gameState = 2;
       return {
@@ -204,10 +209,10 @@ class Game extends Component {
   reStartGame = () => {
     console.log("Game Start");
 
-    hasEaten = false;
-    lastKeyPressed = 39;
-    gameInterval = 500;
-    direction = DIR_RIGHT;
+    Game.Model.hasEaten = false;
+    Game.Model.lastKeyPressed = 39;
+    Game.Model.gameInterval = 500;
+    Game.Model.direction = Game.Model.DIR_RIGHT;
 
     this.setState(state => {
       state.gameState = 1;
@@ -220,23 +225,23 @@ class Game extends Component {
     });
 
     this.createNewMeal();
-    timer = setInterval(this.moveSnake, gameInterval);
+    Game.Model.timer = setInterval(this.moveSnake, Game.Model.gameInterval);
   };
 
   handleKeys = (key) => {
     switch (key.keyCode) {
       default:
       case 39:
-        lastKeyPressed = DIR_RIGHT;
+        Game.Model.lastKeyPressed = Game.Model.DIR_RIGHT;
         break;
       case 40:
-        lastKeyPressed = DIR_DOWN;
+        Game.Model.lastKeyPressed = Game.Model.DIR_DOWN;
         break;
       case 37:
-        lastKeyPressed = DIR_LEFT;
+        Game.Model.lastKeyPressed = Game.Model.DIR_LEFT;
         break;
       case 38:
-        lastKeyPressed = DIR_UP;
+        Game.Model.lastKeyPressed = Game.Model.DIR_UP;
         break;
     }
   };
