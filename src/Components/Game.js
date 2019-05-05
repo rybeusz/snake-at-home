@@ -9,7 +9,8 @@ class Game extends Component {
       snake: [[3,1], [2,1], [1,1]],
       food: [0,0],
       flower: [0,0, false, 25],
-      points: 0
+      points: 0,
+      eatingFilter: 0
     },
 
     GRID_SIZE: 40,
@@ -28,7 +29,6 @@ class Game extends Component {
     flowerLifespan : 25,
 
     hasEaten : false
-
   };
 
   state = Game.Model.initiallState;
@@ -93,6 +93,12 @@ class Game extends Component {
   //  game animation and logic
   moveSnake = () => {
     Game.Model.hasEaten = false;
+    this.setState(state => {
+      state.eatingFilter = 0;
+      return {
+        state
+      };
+    });
 
     //  set new direction if not totally opposite to current direction
     switch (Game.Model.lastKeyPressed) {
@@ -163,6 +169,8 @@ class Game extends Component {
       this.changeInterval();
       this.setState(state => {
         state.points++;
+        state.eatingFilter = 1;
+        console.log('new state', state);
         return {
           state
         };
@@ -177,6 +185,7 @@ class Game extends Component {
       this.setState(state => {
         state.points++;
         state.flower[2] = false;
+        state.eatingFilter = 2;
         return {
           state
         };
@@ -268,7 +277,9 @@ class Game extends Component {
     return (<div>
               <GameDisplay snakeData={this.state.snake} foodData={this.state.food}
                            points={this.state.points} gameState={this.state.gameState}
-                           callback={this.reStartGame} flowerData={this.state.flower}/>
+                           callback={this.reStartGame} flowerData={this.state.flower}
+                           eatingFilter={this.state.eatingFilter}
+              />
             </div>);
   }
 }

@@ -11,8 +11,26 @@ class GameScreen extends Component {
     if(this.props.flowerData[2]) {
       description += '   flower time: ' + this.props.flowerData[3];
     }
-
-    let filter = new PIXI.filters.BlurFilter();
+    let filter = [];
+    switch (this.props.eatingFilter) {
+      case 0:
+      default:
+        filter = [];
+        break;
+      case 1:
+        filter = new PIXI.filters.BlurFilter();
+        break;
+      case 2:
+        filter = new PIXI.filters.ColorMatrixFilter();
+        let colorMatrix = [
+          1, 0, 0, 0,
+          0, 0, 0, 0,
+          0, 0, 0, 0,
+          0, 0, 0, 1
+        ];
+        filter.matrix = colorMatrix;
+        break;
+    }
 
     return (
         <Sprite filters={[filter]}>
