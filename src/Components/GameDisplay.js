@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Stage, withApp } from "react-pixi-fiber";
-import GameScreen from '../Containers/GameScreen';
+import GameScreen from './GameScreen';
 import GameEndScreen from '../Containers/GameEndScreen';
 import GameStartScreen from '../Containers/GameStartScreen';
 

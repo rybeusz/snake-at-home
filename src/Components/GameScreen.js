@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Sprite, Text } from "react-pixi-fiber";
 import * as PIXI from "pixi.js";
-import SnakeFood from "./SnakeFood";
-import SnakeFlower from "./SnakeFlower";
-import SnakeModule from "./SnakeModule";
+import SnakeFood from "../Containers/SnakeFood";
+import SnakeFlower from "../Containers/SnakeFlower";
+import SnakeModule from "../Containers/SnakeModule";
 
 class GameScreen extends Component {
   render() {
