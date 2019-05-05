@@ -195,7 +195,7 @@ class Game extends Component {
         };
       });
     } else {
-      if(Math.random() > 0.9) {
+      if(Math.random() > 0.95) {
         this.createSpecialMeal();
       }
     }
