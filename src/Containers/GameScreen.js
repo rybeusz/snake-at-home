@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Sprite, Text } from "react-pixi-fiber";
+import * as PIXI from "pixi.js";
 import SnakeFood from "./SnakeFood";
 import SnakeFlower from "./SnakeFlower";
 import SnakeModule from "./SnakeModule";
@@ -11,8 +12,10 @@ class GameScreen extends Component {
       description += '   flower time: ' + this.props.flowerData[3];
     }
 
+    let filter = new PIXI.filters.BlurFilter();
+
     return (
-        <Sprite>
+        <Sprite filters={[filter]}>
 
           <SnakeFood TYPE='FOOD' X={this.props.foodData[0]} Y={this.props.foodData[1]}/>
 
