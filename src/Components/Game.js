@@ -170,7 +170,6 @@ class Game extends Component {
       this.setState(state => {
         state.points++;
         state.eatingFilter = 1;
-        console.log('new state', state);
         return {
           state
         };
