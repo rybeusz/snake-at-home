@@ -176,7 +176,7 @@ class Game extends Component {
       this.changeInterval();
       this.setState(state => {
         state.points++;
-        this.state.flower[2] = false;
+        state.flower[2] = false;
         return {
           state
         };

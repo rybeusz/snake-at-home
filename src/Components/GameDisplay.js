@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Stage } from "react-pixi-fiber";
+import Game from './Game';
 import GameScreen from '../Containers/GameScreen';
 import GameEndScreen from '../Containers/GameEndScreen';
 import GameStartScreen from '../Containers/GameStartScreen';
@@ -12,7 +13,6 @@ let stageOptions = {
   resolution: window.devicePixelRatio || 1,
   transparent: false
 };
-
 
 class GameDisplay extends Component {
   componentDidMount() {
