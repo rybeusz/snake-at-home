@@ -1,6 +1,7 @@
 import React from "react";
 import { Sprite } from "react-pixi-fiber";
 import * as PIXI from "pixi.js";
+import Animated from 'animated';
 import sHead from "../Assets/head2.fw.png";
 import sBody from "../Assets/body2.fw.png";
 import Game from "../Components/Game";
