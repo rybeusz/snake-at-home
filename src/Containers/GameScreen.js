@@ -5,6 +5,10 @@ import SnakeFlower from "./SnakeFlower";
 import SnakeModule from "./SnakeModule";
 
 function GameScreen(props) {
+  let description = 'points: ' + props.points;
+  if(props.flowerData[2]) {
+    description += ' flower time: ' + props.flowerData[3];
+  }
 
   return (
     <Sprite>
@@ -22,7 +26,7 @@ function GameScreen(props) {
         interactive
         position={`${props.stageWidth / 2},${props.stageHeight}`}
         style={{ fill: 0x61dafb, fontSize: 24 }}
-        text={'points: ' + props.points}
+        text={description}//{'points: ' + props.points}
       />
 
     </Sprite>

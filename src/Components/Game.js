@@ -50,7 +50,7 @@ class Game extends Component {
   // speeds up the snake every meal
   changeInterval() {
     clearInterval(Game.Model.timer);
-    if(Game.Model.gameInterval > 100) Game.Model.gameInterval -= 20;
+    if(Game.Model.gameInterval > 200) Game.Model.gameInterval -= 40;
     Game.Model.timer = setInterval(this.moveSnake, Game.Model.gameInterval);
   }
 
