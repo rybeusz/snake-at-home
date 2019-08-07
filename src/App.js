@@ -1,6 +1,6 @@
 import React from "react";
-import Snake from './Snake'
-import logo from "./logo.svg";
+import Game from './Components/Game';
+
 import "./App.css";
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Snake at home</h1>
-        <Snake logo={logo} />
+        <Game/>
       </header>
     </div>
   );

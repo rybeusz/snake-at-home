@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "animated": "^0.2.2",
     "pixi.js": "^4.8.7",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-pixi-fiber": "^0.8.0",
-    "react-scripts": "3.0.0"
+    "react-scripts": "3.0.0",
+    "yarn": "^1.15.2"
   },
   "devDependencies": {
     "prop-types": "15.7.2"
