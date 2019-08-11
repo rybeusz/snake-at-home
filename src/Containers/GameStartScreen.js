@@ -1,19 +1,33 @@
 import React from "react";
-import { Sprite, Text } from "react-pixi-fiber";
+import PropTypes from "prop-types";
 
-function GameStartScreen(props) {
+import ScreenElement from "../Components/ScreenElement";
 
-  return (
-    <Sprite interactive pointerdown={props.clickHandler} cursor="pointer">
-      <Text
-        anchor="0.5,1"
-        interactive
-        position={`${props.stageWidth / 2},${props.stageHeight / 2}`}
-        style={{ fill: 0x61dafb, fontSize: 40 }}
-        text={'START GAME'}
-      />
-    </Sprite>
-  );
-}
+const GameStartScreen = ({
+  stageWidth,
+  stageHeight,
+  onClickStartGame,
+  onClickSettings
+}) => (
+  <React.Fragment>
+    <ScreenElement
+      text="START GAME"
+      onClick={onClickStartGame}
+      position={`${stageWidth / 2},${stageHeight / 2 - 30}`}
+    />
+    <ScreenElement
+      text="SETTINGS"
+      onClick={onClickSettings}
+      position={`${stageWidth / 2},${stageHeight / 2 + 30}`}
+    />
+  </React.Fragment>
+);
+
+GameStartScreen.propTypes = {
+  stageWidth: PropTypes.number.isRequired,
+  stageHeight: PropTypes.number.isRequired,
+  onClickStartGame: PropTypes.func.isRequired,
+  onClickSettings: PropTypes.func.isRequired
+};
 
 export default GameStartScreen;

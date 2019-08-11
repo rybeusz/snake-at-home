@@ -1,8 +1,9 @@
-import React,  { Component } from 'react';
-import GameDisplay from './GameDisplay';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-class Game extends Component {
+import GameDisplay from "./GameDisplay";
 
+export default class Game extends Component {
   static Model = {
     initiallState : {
       gameState: 0,
@@ -10,7 +11,8 @@ class Game extends Component {
       food: [0,0],
       flower: [0,0, false, 25],
       points: 0,
-      eatingFilter: 0
+      eatingFilter: 0,
+      gameInterval: 500,
     },
 
     GRID_SIZE: 40,
@@ -19,13 +21,10 @@ class Game extends Component {
     DIR_DOWN : "DOWN",
     DIR_LEFT : "LEFT",
     DIR_RIGHT : "RIGHT",
-    GAME_ROWS : 15,
-    GAME_COLUMNS : 20,
 
     timer : null,
     direction : "RIGHT",
     lastKeyPressed : 39,
-    gameInterval : 500,
     flowerLifespan : 25,
 
     hasEaten : false
@@ -47,16 +46,24 @@ class Game extends Component {
     );
   }
 
+  getColumnsNumber = () => this.props.settings.width / Game.Model.GRID_SIZE;
+
+  getRowsNumber = () => this.props.settings.height / Game.Model.GRID_SIZE;
+
   // speeds up the snake every meal
   changeInterval() {
     clearInterval(Game.Model.timer);
-    if(Game.Model.gameInterval > 200) Game.Model.gameInterval -= 40;
-    Game.Model.timer = setInterval(this.moveSnake, Game.Model.gameInterval);
+    if(this.state.gameInterval > 200){
+      this.setState(prevState => ({
+        gameInterval: prevState.gameInterval - 40,
+      }));
+    }
+    Game.Model.timer = setInterval(this.moveSnake, this.state.gameInterval);
   }
 
   // recreates new food outside of snake recursively
   createNewMeal = () => {
-    let newFoodPosition = [Math.floor(Math.random() * Game.Model.GAME_COLUMNS), Math.floor(Math.random() * Game.Model.GAME_ROWS)];
+    let newFoodPosition = [Math.floor(Math.random() * this.getColumnsNumber()), Math.floor(Math.random() * this.getRowsNumber())];
 
     let foodOnSnake = this.state.snake.filter(elem => elem[0] === newFoodPosition[0] && elem[1] === newFoodPosition[1]);
     if(foodOnSnake.length > 0) {
@@ -72,7 +79,7 @@ class Game extends Component {
   // recreates new flower, that slows the snake down
   createSpecialMeal = () => {
 
-    let newFlowerPosition = [Math.floor(Math.random() * Game.Model.GAME_COLUMNS), Math.floor(Math.random() * Game.Model.GAME_ROWS)];
+    let newFlowerPosition = [Math.floor(Math.random() * this.getColumnsNumber()), Math.floor(Math.random() * this.getRowsNumber())];
 
     let foodOnSnake = this.state.snake.filter(elem => elem[0] === newFlowerPosition[0] && elem[1] === newFlowerPosition[1]);
     if(foodOnSnake.length > 0) {
@@ -132,17 +139,30 @@ class Game extends Component {
     }
 
     //  Wrap snake (in tortilla)wa
-    if(headPosition[0] > Game.Model.GAME_COLUMNS-1) {
-        headPosition[0] = 0;
+    let isCollisionDetected = false;
+    if (headPosition[0] > this.getColumnsNumber() - 1) {
+      headPosition[0] = 0;
+      isCollisionDetected = true;
     }
-    if(headPosition[0] < 0) {
-        headPosition[0] = Game.Model.GAME_COLUMNS-1;
+    if (headPosition[0] < 0) {
+      headPosition[0] = this.getColumnsNumber() - 1;
+      isCollisionDetected = true;
     }
-    if(headPosition[1] > Game.Model.GAME_ROWS-1) {
-        headPosition[1] = 0;
+    if (headPosition[1] > this.getRowsNumber() - 1) {
+      headPosition[1] = 0;
+      isCollisionDetected = true;
     }
-    if(headPosition[1] < 0) {
-        headPosition[1] = Game.Model.GAME_ROWS-1;
+    if (headPosition[1] < 0) {
+      headPosition[1] = this.getRowsNumber() - 1;
+      isCollisionDetected = true;
+    }
+
+    if (
+      isCollisionDetected &&
+      !this.props.settings.edgeWrapping
+    ) {
+      this.gameOver();
+      return;
     }
 
     //  check if snake bites himself
@@ -169,8 +189,8 @@ class Game extends Component {
     //  check if snake hits the flower, reset speed and count point
     if(this.state.flower[2] === true && headPosition[0] === this.state.flower[0]
       && headPosition[1] === this.state.flower[1]) {
-      Game.Model.gameInterval = 500;
       this.changeInterval();
+
       this.setState(prevState => {
         const copyFlower = [...prevState.flower];
         copyFlower[2] = false;
@@ -179,9 +199,10 @@ class Game extends Component {
           points: prevState.points + 1,
           flower: copyFlower,
           eatingFilter: 2,
-        })
-      });
-    }
+          gameInterval: this.props.settings.speed
+        });
+    });
+  }
 
     //  if flower exists, count down it's time, if it doesn't - check if it should
     if(this.state.flower[2]) {
@@ -197,7 +218,6 @@ class Game extends Component {
           flower: copyFlower
         });
       });
-
     } else {
       if(Math.random() > 0.95) {
         this.createSpecialMeal();
@@ -225,12 +245,11 @@ class Game extends Component {
     });
   };
 
-  reStartGame = () => {
+  startGame = () => {
     console.log("Game Start");
 
     Game.Model.hasEaten = false;
     Game.Model.lastKeyPressed = 39;
-    Game.Model.gameInterval = 500;
     Game.Model.direction = Game.Model.DIR_RIGHT;
 
     this.setState({
@@ -239,10 +258,11 @@ class Game extends Component {
       food: [0,0],
       points: 0,
       flower: [0,0, false, 25],
+      gameInterval: this.props.settings.speed,
     });
 
     this.createNewMeal();
-    Game.Model.timer = setInterval(this.moveSnake, Game.Model.gameInterval);
+    Game.Model.timer = setInterval(this.moveSnake, this.state.gameInterval);
   };
 
   handleKeys = (key) => {
@@ -264,14 +284,29 @@ class Game extends Component {
   };
 
   render() {
-    return (<div>
-              <GameDisplay snakeData={this.state.snake} foodData={this.state.food}
-                           points={this.state.points} gameState={this.state.gameState}
-                           callback={this.reStartGame} flowerData={this.state.flower}
-                           eatingFilter={this.state.eatingFilter}
-              />
-            </div>);
+    return (
+        <GameDisplay
+          snakeData={this.state.snake}
+          foodData={this.state.food}
+          points={this.state.points}
+          gameState={this.state.gameState}
+          flowerData={this.state.flower}
+          eatingFilter={this.state.eatingFilter}
+          stageWidth={this.props.settings.width}
+          stageHeight={this.props.settings.height}
+          onClickStartGame={this.startGame}
+          onClickSettings={this.props.showSettings}
+        />
+    );
   }
 }
 
-export default Game;
+Game.prototypes ={
+  settings: PropTypes.shape({
+    width: PropTypes.number,
+    height: PropTypes.number,
+    speed: PropTypes.number,
+    edgeWrapping: PropTypes.bool
+  }).isRequired,
+  showSettings: PropTypes.func.isRequired
+}

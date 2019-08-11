@@ -1,0 +1,12 @@
+.OptionsScreen .Option {
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.OptionsScreen .Option > label {
+  padding-right: 20px;
+  line-height: 30px;
+  height: 30px;
+}

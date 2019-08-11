@@ -1,19 +1,40 @@
 import React from "react";
-import { Sprite, Text } from "react-pixi-fiber";
+import PropTypes from "prop-types";
 
-function GameEndScreen(props) {
+import ScreenElement from "../Components/ScreenElement";
 
-  return (
-    <Sprite interactive pointerdown={props.clickHandler} cursor="pointer">
-      <Text
-        anchor="0.5,1"
-        interactive
-        position={`${props.stageWidth / 2},${props.stageHeight / 2}`}
-        style={{ fill: 0x61dafb, fontSize: 40, align: 'center' }}
-        text={'GAME OVER \nSCORE: ' + `${props.score}` + '\nRESTART GAME?'}
-      />
-    </Sprite>
-  );
-}
+const GameEndScreen = ({
+  points,
+  stageWidth,
+  stageHeight,
+  onClickStartGame,
+  onClickSettings
+}) => (
+  <React.Fragment>
+    <ScreenElement
+      text={`GAME OVER \nSCORE: ${points}`}
+      position={`${stageWidth / 2},${stageHeight / 2 - 60}`}
+      interactive={false}
+    />
+    <ScreenElement
+      text={"RESTART GAME"}
+      onClick={onClickStartGame}
+      position={`${stageWidth / 2},${stageHeight / 2 + 30}`}
+    />
+    <ScreenElement
+      text="SETTINGS"
+      onClick={onClickSettings}
+      position={`${stageWidth / 2},${stageHeight / 2 + 90}`}
+    />
+  </React.Fragment>
+);
+
+GameEndScreen.propTypes = {
+  points: PropTypes.number.isRequired,
+  stageWidth: PropTypes.number.isRequired,
+  stageHeight: PropTypes.number.isRequired,
+  onClickStartGame: PropTypes.func.isRequired,
+  onClickSettings: PropTypes.func.isRequired
+};
 
 export default GameEndScreen;
