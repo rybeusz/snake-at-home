@@ -64,11 +64,8 @@ class Game extends Component {
       return;
     }
 
-    this.setState(state => {
-      state.food = newFoodPosition;
-      return {
-        state
-      };
+    this.setState({
+      food: newFoodPosition
     });
   };
 
@@ -82,22 +79,17 @@ class Game extends Component {
       this.createSpecialMeal();
       return;
     }
-    this.setState(state => {
-      state.flower = [...newFlowerPosition, true, Game.Model.flowerLifespan];
-      return {
-        state
-      };
-    });
+
+    this.setState({
+      flower: [...newFlowerPosition, true, Game.Model.flowerLifespan]
+    })
   };
 
   //  game animation and logic
   moveSnake = () => {
     Game.Model.hasEaten = false;
-    this.setState(state => {
-      state.eatingFilter = 0;
-      return {
-        state
-      };
+    this.setState({
+      eatingFilter: 0
     });
 
     //  set new direction if not totally opposite to current direction
@@ -167,13 +159,11 @@ class Game extends Component {
       Game.Model.hasEaten=true;
       this.createNewMeal();
       this.changeInterval();
-      this.setState(state => {
-        state.points++;
-        state.eatingFilter = 1;
-        return {
-          state
-        };
-      });
+      
+      this.setState(prevState => ({
+        points: prevState.points + 1,
+        eatingFilter: 1,
+      }));
     }
 
     //  check if snake hits the flower, reset speed and count point
@@ -181,27 +171,33 @@ class Game extends Component {
       && headPosition[1] === this.state.flower[1]) {
       Game.Model.gameInterval = 500;
       this.changeInterval();
-      this.setState(state => {
-        state.points++;
-        state.flower[2] = false;
-        state.eatingFilter = 2;
-        return {
-          state
-        };
+      this.setState(prevState => {
+        const copyFlower = [...prevState.flower];
+        copyFlower[2] = false;
+
+        return ({
+          points: prevState.points + 1,
+          flower: copyFlower,
+          eatingFilter: 2,
+        })
       });
     }
 
     //  if flower exists, count down it's time, if it doesn't - check if it should
     if(this.state.flower[2]) {
-      this.setState(state => {
-        state.flower[3]--;
-        if(this.state.flower[3] <= 0) {
-          state.flower[2] = false;
+      this.setState(prevState => {
+        const copyFlower = [...prevState.flower];
+        copyFlower[3] = copyFlower[3] - 1;
+
+        if (copyFlower[3] <= 0) {
+          copyFlower[2] = false;
         }
-        return {
-          state
-        };
+
+        return ({
+          flower: copyFlower
+        });
       });
+
     } else {
       if(Math.random() > 0.95) {
         this.createSpecialMeal();
@@ -209,25 +205,23 @@ class Game extends Component {
     }
 
     //  unshift snake's array, and if snake hits the food - do not trim his tail
-    this.setState(state => {
+    this.setState(prevState => {
+      const copySnake = [...prevState.snake];
       if(!Game.Model.hasEaten) {
-        state.snake.pop();
+        copySnake.pop();
       }
-      state.snake.unshift(headPosition);
-      return {
-        state
-      };
+      copySnake.unshift(headPosition);
+      return ({
+        snake: copySnake
+      });
     });
   };
 
   gameOver = () => {
     console.log("Game Over");
     clearInterval(Game.Model.timer);
-    this.setState(state => {
-      state.gameState = 2;
-      return {
-        state
-      };
+    this.setState({
+      gameState: 2,
     });
   };
 
@@ -239,15 +233,12 @@ class Game extends Component {
     Game.Model.gameInterval = 500;
     Game.Model.direction = Game.Model.DIR_RIGHT;
 
-    this.setState(state => {
-      state.gameState = 1;
-      state.snake = [[3,1], [2,1], [1,1]];
-      state.food = [0,0];
-      state.points = 0;
-      state.flower = [0,0, false, 25];
-      return {
-        state
-      };
+    this.setState({
+      gameState: 1,
+      snake: [[3,1], [2,1], [1,1]],
+      food: [0,0],
+      points: 0,
+      flower: [0,0, false, 25],
     });
 
     this.createNewMeal();
