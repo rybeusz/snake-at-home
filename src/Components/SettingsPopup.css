@@ -1,0 +1,55 @@
+.SettingsPopup {
+  margin-top: 40px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  max-width: calc(100% - 30px);
+  background: rgba(0, 0, 0, 0.95);
+  border: 5px solid #61dafb;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.SettingsPopup h2 {
+  margin-top: 0;
+}
+
+.SettingsPopup .CloseButton {
+  width: 60px;
+  min-height: 60px;
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  color: #61dafb;
+  font-size: 40px;
+  background-color: #000;
+  border: 5px solid #61dafb;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in;
+  border-radius: 50%;
+  outline: none;
+}
+
+.SettingsPopup .CloseButton:hover {
+  background-color: #262626;
+}
+
+.SettingsPopup .SaveButton {
+  margin-top: 30px;
+  padding: 0 30px;
+  line-height: 40px;
+  color: #fff;
+  font-size: 30px;
+  background-color: #06bbed;
+  border: none;
+  cursor: pointer;
+}
+
+.SettingsPopup .SaveButton:hover {
+  background-color: #61dafb;
+}

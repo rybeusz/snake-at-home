@@ -1,0 +1,25 @@
+.OptionsGroup {
+  margin: 0 -10px;
+  display: flex;
+}
+
+.OptionsGroup button {
+  margin: 0 10px;
+  padding: 0 20px;
+  line-height: 30px;
+  font-size: 20px;
+  color: #fff;
+  background-color: #282c34;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+  outline: none;
+}
+
+.OptionsGroup button:hover {
+  background-color: #61dafb;
+}
+
+.OptionsGroup button.selected {
+  background-color: #06bbed;
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import Game from './Components/Game';
+import GameWrapper from './Components/GameWrapper';
 
 import "./App.css";
 
@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Snake at home</h1>
-        <Game/>
+        <GameWrapper/>
       </header>
     </div>
   );

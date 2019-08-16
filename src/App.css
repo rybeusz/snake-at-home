@@ -12,3 +12,8 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.App h1 {
+  margin: 0 0 30px;
+  line-height: 50px;
+}
