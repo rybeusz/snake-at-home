@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import Game from "./Game";
 import SettingsPopup from "./SettingsPopup";
+import TopScore from "./TopScore";
+import TopScoreService from "../TopScoreService";
 
 export default class GameWrapper extends Component {
   state = {
@@ -29,10 +31,20 @@ export default class GameWrapper extends Component {
     });
   };
 
+  onGameOver = topScore => {
+    TopScoreService.setTopScore(topScore);
+    this.forceUpdate();
+  };
+
   render() {
     return (
       <React.Fragment>
-        <Game settings={this.state.settings} showSettings={this.showSettings} />
+        <Game
+          settings={this.state.settings}
+          showSettings={this.showSettings}
+          onGameOver={this.onGameOver}
+        />
+        <TopScore topScore={TopScoreService.getTopScore()} />
         {this.state.showSettingsPopup && (
           <SettingsPopup
             values={this.state.settings}

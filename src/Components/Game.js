@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+
+import React,  { Component } from 'react';
 import PropTypes from "prop-types";
 
-import GameDisplay from "./GameDisplay";
+import GameDisplay from './GameDisplay';
 
 export default class Game extends Component {
   static Model = {
@@ -243,6 +244,8 @@ export default class Game extends Component {
     this.setState({
       gameState: 2,
     });
+
+    this.props.onGameOver(this.state.points);
   };
 
   startGame = () => {
@@ -301,12 +304,13 @@ export default class Game extends Component {
   }
 }
 
-Game.prototypes ={
+Game.prototypes = {
   settings: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,
     speed: PropTypes.number,
     edgeWrapping: PropTypes.bool
   }).isRequired,
-  showSettings: PropTypes.func.isRequired
-}
+  showSettings: PropTypes.func.isRequired,
+  onGameOver: PropTypes.func.isRequired,
+};
