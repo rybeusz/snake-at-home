@@ -3,6 +3,7 @@ import React,  { Component } from 'react';
 import PropTypes from "prop-types";
 
 import GameDisplay from './GameDisplay';
+import InputController from './InputController';
 
 export default class Game extends Component {
   static Model = {
@@ -18,33 +19,22 @@ export default class Game extends Component {
 
     GRID_SIZE: 40,
 
-    DIR_UP : "UP",
-    DIR_DOWN : "DOWN",
-    DIR_LEFT : "LEFT",
-    DIR_RIGHT : "RIGHT",
-
     timer : null,
-    direction : "RIGHT",
-    lastKeyPressed : 39,
     flowerLifespan : 25,
 
     hasEaten : false
   };
 
   state = Game.Model.initiallState;
+  inputContoller = new InputController(); //todo
 
   componentDidMount() {
-    window.addEventListener(
-      "keydown", this.handleKeys, false
-    );
+    this.inputContoller.startListening();
   }
 
   componentWillUnmount() {
     clearInterval(Game.Model.timer);
-
-    window.removeEventListener(
-      "keydown", this.handleKeys, false
-    );
+    this.inputContoller.stopListening();
   }
 
   getColumnsNumber = () => this.props.settings.width / Game.Model.GRID_SIZE;
@@ -100,41 +90,24 @@ export default class Game extends Component {
       eatingFilter: 0
     });
 
-    //  set new direction if not totally opposite to current direction
-    switch (Game.Model.lastKeyPressed) {
-      default:
-      case Game.Model.DIR_RIGHT:
-        if (Game.Model.direction !== Game.Model.DIR_LEFT) Game.Model.direction = Game.Model.DIR_RIGHT;
-        break;
-      case Game.Model.DIR_DOWN:
-        if (Game.Model.direction !== Game.Model.DIR_UP) Game.Model.direction = Game.Model.DIR_DOWN;
-        break;
-      case Game.Model.DIR_LEFT:
-        if (Game.Model.direction !== Game.Model.DIR_RIGHT) Game.Model.direction = Game.Model.DIR_LEFT;
-        break;
-      case Game.Model.DIR_UP:
-        if (Game.Model.direction !== Game.Model.DIR_DOWN) Game.Model.direction = Game.Model.DIR_UP;
-        break;
-    }
-
     //  copy actual snake head position
     let headPosition = [[0,0]];
     headPosition[0] = this.state.snake[0][0];
     headPosition[1] = this.state.snake[0][1];
 
     //  set new head position according to direction
-    switch (Game.Model.direction) {
+    switch (this.inputContoller.getDirection()) {
       default:
-      case Game.Model.DIR_RIGHT :
+      case InputController.DIRECTIONS.DIR_RIGHT :
         headPosition[0]++;
         break;
-      case Game.Model.DIR_LEFT :
+      case InputController.DIRECTIONS.DIR_LEFT :
         headPosition[0]--;
         break;
-      case Game.Model.DIR_UP :
+      case InputController.DIRECTIONS.DIR_UP :
         headPosition[1]--;
         break;
-      case Game.Model.DIR_DOWN :
+      case InputController.DIRECTIONS.DIR_DOWN :
         headPosition[1]++;
         break;
     }
@@ -252,8 +225,7 @@ export default class Game extends Component {
     console.log("Game Start");
 
     Game.Model.hasEaten = false;
-    Game.Model.lastKeyPressed = 39;
-    Game.Model.direction = Game.Model.DIR_RIGHT;
+    this.inputContoller.reset();
 
     this.setState({
       gameState: 1,
@@ -266,24 +238,6 @@ export default class Game extends Component {
 
     this.createNewMeal();
     Game.Model.timer = setInterval(this.moveSnake, this.state.gameInterval);
-  };
-
-  handleKeys = (key) => {
-    switch (key.keyCode) {
-      default:
-      case 39:
-        Game.Model.lastKeyPressed = Game.Model.DIR_RIGHT;
-        break;
-      case 40:
-        Game.Model.lastKeyPressed = Game.Model.DIR_DOWN;
-        break;
-      case 37:
-        Game.Model.lastKeyPressed = Game.Model.DIR_LEFT;
-        break;
-      case 38:
-        Game.Model.lastKeyPressed = Game.Model.DIR_UP;
-        break;
-    }
   };
 
   render() {
