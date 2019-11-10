@@ -30,7 +30,6 @@ export default class Game extends Component {
 
     this.state = Game.Model.initiallState;
     this.inputController = new InputController();
-    console.warn('raz')
   }
 
   componentDidUpdate() {
