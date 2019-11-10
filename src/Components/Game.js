@@ -3,7 +3,7 @@ import React,  { Component } from 'react';
 import PropTypes from "prop-types";
 
 import GameDisplay from './GameDisplay';
-import InputController from './InputController';
+import { DIRECTIONS, InputController } from "./InputController";
 
 export default class Game extends Component {
   static Model = {
@@ -27,6 +27,10 @@ export default class Game extends Component {
 
   state = Game.Model.initiallState;
   inputContoller = new InputController(); //todo
+
+  componentDidUpdate() {
+    this.inputContoller.changeControls(this.props.settings.keyboard);
+  }
 
   componentDidMount() {
     this.inputContoller.startListening();
@@ -98,16 +102,16 @@ export default class Game extends Component {
     //  set new head position according to direction
     switch (this.inputContoller.getDirection()) {
       default:
-      case InputController.DIRECTIONS.DIR_RIGHT :
+      case DIRECTIONS.DIR_RIGHT :
         headPosition[0]++;
         break;
-      case InputController.DIRECTIONS.DIR_LEFT :
+      case DIRECTIONS.DIR_LEFT :
         headPosition[0]--;
         break;
-      case InputController.DIRECTIONS.DIR_UP :
+      case DIRECTIONS.DIR_UP :
         headPosition[1]--;
         break;
-      case InputController.DIRECTIONS.DIR_DOWN :
+      case DIRECTIONS.DIR_DOWN :
         headPosition[1]++;
         break;
     }
@@ -226,7 +230,7 @@ export default class Game extends Component {
 
     Game.Model.hasEaten = false;
     this.inputContoller.reset();
-
+    
     this.setState({
       gameState: 1,
       snake: [[3,1], [2,1], [1,1]],
