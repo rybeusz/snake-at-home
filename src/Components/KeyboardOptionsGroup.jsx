@@ -73,10 +73,9 @@ class KeyboardOptionsGroup extends React.Component {
     return (<center>
       <div className="OptionsGroup">
         {options.map(keyOption => (
-        <center>
+        <center key={keyOption.direction}>
           <div>{keyOption.label}</div>
           <button
-            key={keyOption.keyCode}
             className={keyToChange && keyToChange.label === keyOption.label ? "selected" : ""}
             onClick={() => this.startChangingKey(keyOption)}
           >

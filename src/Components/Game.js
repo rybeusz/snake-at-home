@@ -25,20 +25,25 @@ export default class Game extends Component {
     hasEaten : false
   };
 
-  state = Game.Model.initiallState;
-  inputContoller = new InputController(); //todo
+  constructor() {
+    super();
+
+    this.state = Game.Model.initiallState;
+    this.inputController = new InputController();
+    console.warn('raz')
+  }
 
   componentDidUpdate() {
-    this.inputContoller.changeControls(this.props.settings.keyboard);
+    this.inputController.changeControls(this.props.settings.keyboard);
   }
 
   componentDidMount() {
-    this.inputContoller.startListening();
+    this.inputController.startListening();
   }
 
   componentWillUnmount() {
     clearInterval(Game.Model.timer);
-    this.inputContoller.stopListening();
+    this.inputController.stopListening();
   }
 
   getColumnsNumber = () => this.props.settings.width / Game.Model.GRID_SIZE;
@@ -100,7 +105,7 @@ export default class Game extends Component {
     headPosition[1] = this.state.snake[0][1];
 
     //  set new head position according to direction
-    switch (this.inputContoller.getDirection()) {
+    switch (this.inputController.getDirection()) {
       default:
       case DIRECTIONS.DIR_RIGHT :
         headPosition[0]++;
@@ -229,7 +234,7 @@ export default class Game extends Component {
     console.log("Game Start");
 
     Game.Model.hasEaten = false;
-    this.inputContoller.reset();
+    this.inputController.reset();
     
     this.setState({
       gameState: 1,
