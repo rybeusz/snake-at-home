@@ -3,7 +3,7 @@ import React,  { Component } from 'react';
 import PropTypes from "prop-types";
 
 import GameDisplay from './GameDisplay';
-import { DIRECTIONS, InputController } from "./InputController";
+import { DIRECTIONS } from "./InputController";
 
 export default class Game extends Component {
   static Model = {
@@ -25,24 +25,19 @@ export default class Game extends Component {
     hasEaten : false
   };
 
-  constructor() {
-    super();
-
-    this.state = Game.Model.initiallState;
-    this.inputController = new InputController();
-  }
+  state = Game.Model.initiallState;
 
   componentDidUpdate() {
-    this.inputController.changeControls(this.props.settings.keyboard);
+    this.props.inputController.changeControls(this.props.settings.keyboard);
   }
 
   componentDidMount() {
-    this.inputController.startListening();
+    this.props.inputController.startListening();
   }
 
   componentWillUnmount() {
     clearInterval(Game.Model.timer);
-    this.inputController.stopListening();
+    this.props.inputController.stopListening();
   }
 
   getColumnsNumber = () => this.props.settings.width / Game.Model.GRID_SIZE;
@@ -104,7 +99,7 @@ export default class Game extends Component {
     headPosition[1] = this.state.snake[0][1];
 
     //  set new head position according to direction
-    switch (this.inputController.getDirection()) {
+    switch (this.props.inputController.getDirection()) {
       default:
       case DIRECTIONS.DIR_RIGHT :
         headPosition[0]++;
@@ -233,7 +228,7 @@ export default class Game extends Component {
     console.log("Game Start");
 
     Game.Model.hasEaten = false;
-    this.inputController.reset();
+    this.props.inputController.reset();
     
     this.setState({
       gameState: 1,
