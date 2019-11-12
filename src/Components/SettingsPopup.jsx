@@ -52,7 +52,9 @@ SettingsPopup.propTypes = {
     height: PropTypes.number,
     speed: PropTypes.number,
     edgeWrapping: PropTypes.bool,
-    keyboard: PropTypes.array,
+    input: PropTypes.shape({
+      keyboard: PropTypes.array,
+    })
   }),
   hideSettings: PropTypes.func.isRequired,
   saveSettings: PropTypes.func.isRequired

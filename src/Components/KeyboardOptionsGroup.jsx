@@ -91,7 +91,7 @@ class KeyboardOptionsGroup extends React.Component {
 }
 
 KeyboardOptionsGroup.defaultProps = {
-  options: [...DEFAULT_CONTROL_OPTIONS],
+  options: [...DEFAULT_CONTROL_OPTIONS.keyboard],
 };
 
 KeyboardOptionsGroup.propTypes = {

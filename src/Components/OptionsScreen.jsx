@@ -97,8 +97,8 @@ const OptionsScreen = ({ values, onChange }) => (
     <div className="Option">
       <label>Keyboard settings</label>
       <KeyboardOptionsGroup
-        options={values.keyboard}
-        onChange={value => onChange("keyboard", value)}
+        options={values.input.keyboard}
+        onChange={keyboard => onChange("input", {...values.input, keyboard})}
       />
     </div>
   </div>
@@ -110,7 +110,9 @@ OptionsScreen.propTypes = {
     height: PropTypes.number,
     speed: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     edgeWrapping: PropTypes.bool,
-    keyboard: PropTypes.array,
+    input: PropTypes.shape({
+      keyboard: PropTypes.array,
+    })
   }).isRequired,
   onChange: PropTypes.func
 };

@@ -28,7 +28,7 @@ export default class Game extends Component {
   state = Game.Model.initiallState;
 
   componentDidUpdate() {
-    this.props.inputController.changeControls(this.props.settings.keyboard);
+    this.props.inputController.changeControls(this.props.settings.input);
   }
 
   componentDidMount() {

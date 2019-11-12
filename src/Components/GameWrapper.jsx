@@ -12,7 +12,8 @@ export default class GameWrapper extends Component {
       width: 800,
       height: 600,
       speed: 500,
-      edgeWrapping: false
+      edgeWrapping: false,
+      input: {},
     },
     showSettingsPopup: false,
     inputController: new InputController(),

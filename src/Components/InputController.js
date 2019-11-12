@@ -5,28 +5,30 @@ export const DIRECTIONS = {
   DIR_RIGHT: "RIGHT",
 }
 
-export const DEFAULT_CONTROL_OPTIONS = [
-  {
-    keyCode: 38,
-    label: "Up",
-    direction: DIRECTIONS.DIR_UP,
-  },
-  {
-    keyCode: 40,
-    label: "Down",
-    direction: DIRECTIONS.DIR_DOWN,
-  },
-  {
-    keyCode: 37,
-    label: "Left",
-    direction: DIRECTIONS.DIR_LEFT,
-  },
-  {
-    keyCode: 39,
-    label: "Right",
-    direction: DIRECTIONS.DIR_RIGHT,
-  }
-];
+export const DEFAULT_CONTROL_OPTIONS = {
+  keyboard: [
+    {
+      keyCode: 38,
+      label: "Up",
+      direction: DIRECTIONS.DIR_UP,
+    },
+    {
+      keyCode: 40,
+      label: "Down",
+      direction: DIRECTIONS.DIR_DOWN,
+    },
+    {
+      keyCode: 37,
+      label: "Left",
+      direction: DIRECTIONS.DIR_LEFT,
+    },
+    {
+      keyCode: 39,
+      label: "Right",
+      direction: DIRECTIONS.DIR_RIGHT,
+    }
+  ]
+};
 
 export class InputController {
   direction;
@@ -38,13 +40,13 @@ export class InputController {
 
   changeControls(options) {
     if (options) {
-      this.options = options;
+      this.options = {...this.options, ...options};
     }
   }
 
   reset() {
     this.direction = DIRECTIONS.DIR_RIGHT;
-    this.options = [...DEFAULT_CONTROL_OPTIONS];
+    this.options = {...DEFAULT_CONTROL_OPTIONS};
   }
 
   startListening() {
@@ -60,7 +62,7 @@ export class InputController {
   }
 
   handleKeys = (key) => {
-    const keyOption = this.options.find( x => x.keyCode === key.keyCode);
+    const keyOption = this.options.keyboard.find( x => x.keyCode === key.keyCode);
     if (keyOption) {
       this.setDirection(keyOption.direction);
     }
