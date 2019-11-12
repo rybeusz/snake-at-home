@@ -231,11 +231,8 @@ export default class Game extends Component {
     this.props.inputController.reset();
     
     this.setState({
+      ...Game.Model.initiallState,
       gameState: 1,
-      snake: [[3,1], [2,1], [1,1]],
-      food: [0,0],
-      points: 0,
-      flower: [0,0, false, 25],
       gameInterval: this.props.settings.speed,
     });
 
