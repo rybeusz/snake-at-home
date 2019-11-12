@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { DEFAULT_CONTROL_OPTIONS } from "./InputController";
 
 import "./OptionsGroup.css";
 import "./KeyboardOptionsGroup.css";
@@ -88,6 +89,10 @@ class KeyboardOptionsGroup extends React.Component {
     </center>);
   }
 }
+
+KeyboardOptionsGroup.defaultProps = {
+  options: [...DEFAULT_CONTROL_OPTIONS],
+};
 
 KeyboardOptionsGroup.propTypes = {
   options: PropTypes.arrayOf(

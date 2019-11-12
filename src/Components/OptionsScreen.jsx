@@ -5,7 +5,6 @@ import OptionsGroup from "./OptionsGroup";
 
 import "./OptionsScreen.css";
 import KeyboardOptionsGroup from "./KeyboardOptionsGroup";
-import { DEFAULT_CONTROL_OPTIONS } from "./InputController";
 
 const OptionsScreen = ({ values, onChange }) => (
   <div className="OptionsScreen">
@@ -98,7 +97,7 @@ const OptionsScreen = ({ values, onChange }) => (
     <div className="Option">
       <label>Keyboard settings</label>
       <KeyboardOptionsGroup
-        options={values.keyboard || [...DEFAULT_CONTROL_OPTIONS]}
+        options={values.keyboard}
         onChange={value => onChange("keyboard", value)}
       />
     </div>
